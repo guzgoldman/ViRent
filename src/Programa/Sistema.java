@@ -15,14 +15,12 @@ import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 public class Sistema {
 
 	public static void main(String[] args) {
-		Conexion conexion = new Conexion("jdbc:mysql://192.168.100.129:3306/TPGuzman","Guzman","Lujan");
+		Conexion conexion = new Conexion("jdbc:mysql://localhost:3306/database","root","password");
 		Scanner sc = new Scanner(System.in);
 		
 		try (Connection conn = conexion.getConnection()) {
 			while (true) {
-				if (AlquilerQuery.cantidadAlquileresActivos(conn) > 0) {
-					AlquilerQuery.actualizarEstados(conn);
-				}
+				AlquilerQuery.mostrarAlquileresVencidos(conn);
 				byte opcion = menuOpciones(sc);
 				
 				switch (opcion) {
@@ -57,7 +55,7 @@ public class Sistema {
 						iniciarAlquiler(sc, conn);
 						continue;
 					case 11:
-						mostrarAlquileres(conn);
+						mostrarAlquileresActivos(conn);
 						continue;
 					case 12:
 						mostrarAlquileresPorUsuario(conn, sc);
@@ -68,7 +66,7 @@ public class Sistema {
 					case 15:
 						break;
 					default:
-						System.out.println("Advertencia: Opción no válida");
+						System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 						continue;
 				}
 				break;
@@ -80,20 +78,20 @@ public class Sistema {
 	}
 	
 	private static byte menuOpciones(Scanner sc) {
-		System.out.println("Menú de opciones:");
+		System.out.println("Menï¿½ de opciones:");
 		System.out.println("[1] Registrar cliente");
 		System.out.println("[2] Dar de baja a cliente");
 		System.out.println("[3] Buscar cliente");
 		System.out.println("[4] Listado de clientes registrados");
 		System.out.println("[5] Modificar datos de cliente");
-		System.out.println("[6] Registrar vehículo");
-		System.out.println("[7] Dar de baja a vehículo");
-		System.out.println("[8] Buscar vehículo");
-		System.out.println("[9] Modificar datos de vehículo");
+		System.out.println("[6] Registrar vehï¿½culo");
+		System.out.println("[7] Dar de baja a vehï¿½culo");
+		System.out.println("[8] Buscar vehï¿½culo");
+		System.out.println("[9] Modificar datos de vehï¿½culo");
 		System.out.println("[10] Iniciar proceso de alquiler");
 		System.out.println("[11] Listado de alquileres activos");
 		System.out.println("[12] Listado de alquileres por usuario");
-		System.out.println("[13] Finalizar alquiler");
+		System.out.println("[13] Finalizar alquiler (activo o vencido)");
 		System.out.println("[15] Salir del programa");
 		byte opcion = selectorOpcion(sc);
 		return opcion;
@@ -117,35 +115,35 @@ public class Sistema {
 		}
 		
 		while (true) {
-			System.out.print("Ingrese la dirección del cliente: ");
+			System.out.print("Ingrese la direcciï¿½n del cliente: ");
 			direccion = sc.nextLine();
 			
 			if (validarDireccion(direccion)) {
 				break;
 			} else {
-				System.out.println("Error: La dirección no puede contener solo números");
+				System.out.println("Error: La direcciï¿½n no puede contener solo nï¿½meros");
 			}
 		}
 		
 		while (true) {
-			System.out.print("Ingrese el teléfono del cliente: ");
+			System.out.print("Ingrese el telï¿½fono del cliente: ");
 			telefono = sc.nextLine();
 			
 			if(validarTelefono(telefono)) {
 				break;
 			} else {
-				System.out.println("Error: El teléfono solo puede contener números");
+				System.out.println("Error: El telï¿½fono solo puede contener nï¿½meros");
 			}
 		}
 		
 		while (true) {
-			System.out.print("Ingrese el Nº de DNI del cliente: ");
+			System.out.print("Ingrese el Nï¿½ de DNI del cliente: ");
 			dni = sc.nextLine();
 			
 			if (validarDNI(dni)) {
 				break;
 			} else {
-				System.out.println("Error: El DNI debe contener solo números y entre 7 a 9 caracteres");
+				System.out.println("Error: El DNI debe contener solo nï¿½meros y entre 7 a 9 caracteres");
 			}
 		}
 		
@@ -156,9 +154,9 @@ public class Sistema {
 				System.out.println("Cliente creado exitosamente");
 			}
 		} catch (SQLIntegrityConstraintViolationException e) {
-			System.out.println("Error: El número de teléfono y/o DNI ya han sido registrados");
+			System.out.println("Error: El nï¿½mero de telï¿½fono y/o DNI ya han sido registrados");
 		} catch (MysqlDataTruncation e) {
-			System.out.println("Error: Ocurrió un problema en el ingreso de datos. Inténtelo nuevamente o contacte al soporte técnico");
+			System.out.println("Error: Ocurriï¿½ un problema en el ingreso de datos. Intï¿½ntelo nuevamente o contacte al soporte tï¿½cnico");
 		}
 	}
 	
@@ -167,18 +165,18 @@ public class Sistema {
 			int id = 0;
 			String dni = null;
 			Cliente cliente;
-			System.out.println("[1] Eliminar por Nº de cliente");
+			System.out.println("[1] Eliminar por Nï¿½ de cliente");
 			System.out.println("[2] Eliminar por DNI/Licencia");
-			System.out.println("[3] Regresar al menú principal");
+			System.out.println("[3] Regresar al menï¿½ principal");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
 				case 1:
 					try {
-						System.out.print("Ingrese el Nº de cliente: ");
+						System.out.print("Ingrese el Nï¿½ de cliente: ");
 						id = sc.nextInt();
 					} catch (InputMismatchException e) {
-						System.out.println("Error: Este campo solo admite números");
+						System.out.println("Error: Este campo solo admite nï¿½meros");
 						sc.nextLine();
 					}
 					
@@ -193,12 +191,12 @@ public class Sistema {
 					break;
 				case 2:
 					while (true) {
-						System.out.print("Ingrese el Nº de DNI del cliente: ");
+						System.out.print("Ingrese el Nï¿½ de DNI del cliente: ");
 						dni = sc.nextLine();
 						if (validarDNI(dni)) {
 							break;
 						} else {
-							System.out.println("El DNI debe contener solo números y entre 7 a 9 caracteres. Intentelo nuevamente");
+							System.out.println("El DNI debe contener solo nï¿½meros y entre 7 a 9 caracteres. Intentelo nuevamente");
 						}
 					}
 					
@@ -214,7 +212,7 @@ public class Sistema {
 				case 3:
 					break;
 				default:
-					System.out.println("Advertencia: Opción no válida");
+					System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 					continue;
 			}
 			break;
@@ -226,19 +224,19 @@ public class Sistema {
 			String dni = null;
 			int id = 0;
 			Cliente cliente = null;
-			System.out.println("[1] Buscar por Nº de Cliente");
-			System.out.println("[2] Buscar por DNI/Nº Licencia");
+			System.out.println("[1] Buscar por Nï¿½ de Cliente");
+			System.out.println("[2] Buscar por DNI/Nï¿½ Licencia");
 			System.out.println("[3] Buscar por nombre");
-			System.out.println("[4] Regresar al menú principal");
+			System.out.println("[4] Regresar al menï¿½ principal");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
 				case 1:
 					try {
-						System.out.print("Ingrese el Nº de Cliente: ");
+						System.out.print("Ingrese el Nï¿½ de Cliente: ");
 						id = sc.nextInt();
 					} catch (InputMismatchException e) {
-						System.out.println("Error: Este campo solo admite números");
+						System.out.println("Error: Este campo solo admite nï¿½meros");
 						sc.nextLine();
 					}
 					
@@ -252,13 +250,13 @@ public class Sistema {
 					break;
 				case 2:
 					while (true) {
-						System.out.print("Ingrese el Nº de DNI del cliente: ");
+						System.out.print("Ingrese el Nï¿½ de DNI del cliente: ");
 						dni = sc.nextLine();
 						if (validarDNI(dni)) {
 							cliente = new ClienteQuery().mostrarClientePorDni(conn, dni);
 							break;
 						} else {
-							System.out.println("El DNI debe contener solo números y entre 7 a 9 caracteres. Intentelo nuevamente");
+							System.out.println("El DNI debe contener solo nï¿½meros y entre 7 a 9 caracteres. Intentelo nuevamente");
 						}
 					}
 					
@@ -303,11 +301,11 @@ public class Sistema {
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
 		
-		model.addColumn("Nº de Cliente");
+		model.addColumn("Nï¿½ de Cliente");
 		model.addColumn("Nombre completo");
-		model.addColumn("Dirección");
+		model.addColumn("Direcciï¿½n");
 		model.addColumn("Telefono");
-		model.addColumn("DNI/Nº Licencia");
+		model.addColumn("DNI/Nï¿½ Licencia");
 		
 		ArrayList<Cliente> clientes = new ClienteQuery().mostrarCliente(conn);
 		
@@ -330,12 +328,12 @@ public class Sistema {
 		Cliente cliente;
 		while (true) {
 			try {
-				System.out.print("Ingresa el Nº de Cliente a modificar: ");
+				System.out.print("Ingresa el Nï¿½ de Cliente a modificar: ");
 				id = sc.nextInt();
 				sc.nextLine();
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Error: Este campo solo admite números");
+				System.out.println("Error: Este campo solo admite nï¿½meros");
 				continue;
 			}
 		}
@@ -351,9 +349,9 @@ public class Sistema {
 		    
 		    JLabel lblNombre = new JLabel("Nombre:");
 		    JTextField txtNombre = new JTextField(cliente.getNombre());
-		    JLabel lblDireccion = new JLabel("Dirección:");
+		    JLabel lblDireccion = new JLabel("Direcciï¿½n:");
 		    JTextField txtDireccion = new JTextField(cliente.getDireccion());
-		    JLabel lblTelefono = new JLabel("Teléfono:");
+		    JLabel lblTelefono = new JLabel("Telï¿½fono:");
 		    JTextField txtTelefono = new JTextField(String.valueOf(cliente.getTelefono()));
 		    JLabel lblDni = new JLabel("DNI:");
 		    JTextField txtDni = new JTextField(String.valueOf(cliente.getDni()));
@@ -389,9 +387,9 @@ public class Sistema {
 			                JOptionPane.showMessageDialog(frame, "Error al actualizar los datos");
 			            }
 		    		} catch (SQLIntegrityConstraintViolationException er) {
-		    			System.out.println("Error: El número de teléfono y/o DNI ya han sido registrados");
+		    			System.out.println("Error: El nï¿½mero de telï¿½fono y/o DNI ya han sido registrados");
 		    		} catch (MysqlDataTruncation er) {
-		    			System.out.println("Error: Ocurrió un problema en el ingreso de datos. Inténtelo nuevamente o contacte al soporte técnico");
+		    			System.out.println("Error: Ocurriï¿½ un problema en el ingreso de datos. Intï¿½ntelo nuevamente o contacte al soporte tï¿½cnico");
 		    		}
 		        }
 		    });
@@ -412,57 +410,57 @@ public class Sistema {
 		int anio;
 		String tipo;
 		String matricula;
-		System.out.print("Ingrese la marca del vehículo: ");
+		System.out.print("Ingrese la marca del vehï¿½culo: ");
 		String marca = sc.nextLine();
 		 
-		System.out.print("Ingrese el modelo del vehículo: ");
+		System.out.print("Ingrese el modelo del vehï¿½culo: ");
 		String modelo = sc.nextLine();
 		
 		while (true) {
 			try {
-				System.out.print("Ingrese el año de fabricación del vehículo: ");
+				System.out.print("Ingrese el aï¿½o de fabricaciï¿½n del vehï¿½culo: ");
 				anio = sc.nextInt();
 				sc.nextLine();
 					if (anio > 2014) {
 						break;
 					} else {
-						System.out.println("Error: Solo se admiten vehículos fabricados a partir de 2015");
+						System.out.println("Error: Solo se admiten vehï¿½culos fabricados a partir de 2015");
 					}
 			} catch (InputMismatchException e) {
-				System.out.println("Error: Este campo solo admite números");
+				System.out.println("Error: Este campo solo admite nï¿½meros");
 				sc.nextLine();
 			}
 		}
 		
 		while (true) {
-			System.out.print("Ingrese la mátricula del vehículo: ");
+			System.out.print("Ingrese la mï¿½tricula del vehï¿½culo: ");
 			matricula = sc.nextLine();
 			if (validarMatricula(matricula)) {
 				break;
 			} else {
-				System.out.println("Error: Formato de matrícula no válido");
+				System.out.println("Error: Formato de matrï¿½cula no vï¿½lido");
 			}
 		}
 		
 		while (true) {
-			System.out.println("Seleccione el tipo de vehículo");
-			System.out.println("[1] Moto");
-			System.out.println("[2] Auto");
-			System.out.println("[3] Camioneta");
+			System.out.println("Seleccione el tipo de vehï¿½culo");
+			System.out.println("[1] Auto");
+			System.out.println("[2] Camioneta");
+			System.out.println("[3] Moto");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
 				case 1:
-					tipo = "Moto";
-					break;
-				case 2:
 					tipo = "Auto";
 					break;
-				case 3:
+				case 2:
 					tipo = "Camioneta";
 					break;
+				case 3:
+					tipo = "Moto";
+					break;
 				default:
-					System.out.println("Error: Opción no válida");
+					System.out.println("Error: Opciï¿½n no vï¿½lida");
 					continue;
 			}
 			break;
@@ -472,14 +470,14 @@ public class Sistema {
 		try {
 			boolean exito = VehiculoQuery.insertarVehiculo(conn, vehiculo);
 			if (exito) {
-				System.out.println("Vehículo registrado correctamente");
+				System.out.println("Vehï¿½culo registrado correctamente");
 			} else {
-				System.out.println("Error: No se ha podido registrar el vehículo");
+				System.out.println("Error: No se ha podido registrar el vehï¿½culo");
 			}
 		} catch (SQLIntegrityConstraintViolationException e) {
-			System.out.println("Error: La matrícula ingresada ya ha sido registrada");
+			System.out.println("Error: La matrï¿½cula ingresada ya ha sido registrada");
 		} catch (MysqlDataTruncation e) {
-			System.out.println("Error: Ocurrió un problema en el ingreso de datos. Inténtelo nuevamente o contacte al soporte técnico");
+			System.out.println("Error: Ocurriï¿½ un problema en el ingreso de datos. Intï¿½ntelo nuevamente o contacte al soporte tï¿½cnico");
 		}
 		
 	}
@@ -490,53 +488,53 @@ public class Sistema {
 			int id = 0;
 			Vehiculo vehiculo;
 			System.out.println("[1] Eliminar por ID");
-			System.out.println("[2] Eliminar por matrícula");
-			System.out.println("[3] Regresar al menú principal");
+			System.out.println("[2] Eliminar por matrï¿½cula");
+			System.out.println("[3] Regresar al menï¿½ principal");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
 				case 1:
 					try {
-						System.out.print("Ingrese el ID del vehículo: ");
+						System.out.print("Ingrese el ID del vehï¿½culo: ");
 						id = sc.nextInt();
 					} catch (InputMismatchException e) {
-						System.out.println("Error: Este campo solo admite números");
+						System.out.println("Error: Este campo solo admite nï¿½meros");
 						sc.nextLine();
 					}
 					
 					vehiculo = new VehiculoQuery().mostrarVehiculoPorId(conn, id);
 					if (vehiculo != null) {
 						VehiculoQuery.borrarVehiculoPorId(conn, id);
-						System.out.println("Vehículo eliminado");
+						System.out.println("Vehï¿½culo eliminado");
 					} else {
-						System.out.println("Vehículo no encontrado");
+						System.out.println("Vehï¿½culo no encontrado");
 						continue;
 					}
 					break;
 				case 2:
 					while (true) {
-						System.out.print("Ingrese la matrícula del vehículo (formatos válidos: AB123CD - ABC123): ");
+						System.out.print("Ingrese la matrï¿½cula del vehï¿½culo (formatos vï¿½lidos: AB123CD - ABC123): ");
 						matricula = sc.nextLine();
 						if (validarMatricula(matricula)) {
 							break;
 						} else {
-							System.out.println("Error: Formato de matrícula no válido");
+							System.out.println("Error: Formato de matrï¿½cula no vï¿½lido");
 						}
 					}
 					
 					vehiculo = new VehiculoQuery().mostrarVehiculoPorMatricula(conn, matricula);
 					if (vehiculo != null) {
 						VehiculoQuery.borrarVehiculoPorMatricula(conn, matricula);
-						System.out.println("Vehículo eliminado");
+						System.out.println("Vehï¿½culo eliminado");
 					} else {
-						System.out.println("Vehículo no encontrado");
+						System.out.println("Vehï¿½culo no encontrado");
 						continue;
 					}
 					break;
 				case 3:
 					break;
 				default:
-					System.out.println("Error: Opción no válida");
+					System.out.println("Error: Opciï¿½n no vï¿½lida");
 					continue;
 			}
 			break;
@@ -551,7 +549,7 @@ public class Sistema {
 			System.out.println("[1] Buscar por marca");
 			System.out.println("[2] Buscar por tipo");
 			System.out.println("[3] Buscar por estado");
-			System.out.println("[4] Regresar al menú principal");
+			System.out.println("[4] Regresar al menï¿½ principal");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
@@ -564,7 +562,7 @@ public class Sistema {
 						v.mostrarDatos();
 					}
 				} else {
-					System.out.println("No se han encontrado vehículos de la marca ingresada");
+					System.out.println("No se han encontrado vehï¿½culos de la marca ingresada");
 				}
 				break;
 			case 2:
@@ -582,7 +580,7 @@ public class Sistema {
 									v.mostrarDatos();
 								}
 							} else {
-								System.out.println("No hay vehículos disponibles para la categoría 'Auto'");
+								System.out.println("No hay vehï¿½culos disponibles para la categorï¿½a 'Auto'");
 							}
 							break;
 						case 2:
@@ -592,7 +590,7 @@ public class Sistema {
 									v.mostrarDatos();
 								}
 							} else {
-								System.out.println("No hay vehículos disponibles para la categoría 'Camioneta'");
+								System.out.println("No hay vehï¿½culos disponibles para la categorï¿½a 'Camioneta'");
 							}
 							break;
 						case 3:
@@ -602,7 +600,7 @@ public class Sistema {
 									v.mostrarDatos();
 								}
 							} else {
-								System.out.println("No hay vehículos disponibles para la categoría 'Moto'");
+								System.out.println("No hay vehï¿½culos disponibles para la categorï¿½a 'Moto'");
 							}
 							break;
 						default:
@@ -612,9 +610,9 @@ public class Sistema {
 				}
 				break;
 			case 3:
-				System.out.println("[1] Mostrar vehículos disponibles");
-				System.out.println("[2] Mostrar vehículos alquilados");
-				System.out.println("[3] Regresar al menú de opciones");
+				System.out.println("[1] Mostrar vehï¿½culos disponibles");
+				System.out.println("[2] Mostrar vehï¿½culos alquilados");
+				System.out.println("[3] Regresar al menï¿½ de opciones");
 				byte opcion_estado = selectorOpcion(sc);
 				
 				switch (opcion_estado) {
@@ -625,7 +623,7 @@ public class Sistema {
 								v.mostrarDatos();
 							}
 						} else {
-							System.out.println("No hay vehículos disponibles");
+							System.out.println("No hay vehï¿½culos disponibles");
 						}
 						break;
 					case 2:
@@ -635,13 +633,13 @@ public class Sistema {
 								v.mostrarDatos();
 							}
 						} else {
-							System.out.println("No hay vehículos alquilados");
+							System.out.println("No hay vehï¿½culos alquilados");
 						}
 						break;
 					case 3:
 						break;
 					default:
-						System.out.println("Advertencia: Opción no válida");
+						System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 						continue;
 				}
 				break;
@@ -657,57 +655,57 @@ public class Sistema {
 	private static void modificarVehiculo(Scanner sc, Connection conn) {
 		String matricula = null;
 		while (true) {
-			System.out.print("Ingrese la matrícula del vehículo a modificar: ");
+			System.out.print("Ingrese la matrï¿½cula del vehï¿½culo a modificar: ");
 			matricula = sc.nextLine();
 			if (validarMatricula(matricula)) {
 				break;
 			} else {
-				System.out.println("Error: Formato de matrícula no válido");
+				System.out.println("Error: Formato de matrï¿½cula no vï¿½lido");
 			}
 		}
 		Vehiculo vehiculo = new VehiculoQuery().mostrarVehiculoPorMatricula(conn, matricula);
 		
 		if (vehiculo != null) {
-			System.out.print("Ingrese la marca del vehículo: ");
+			System.out.print("Ingrese la marca del vehï¿½culo: ");
 			vehiculo.setMarca(sc.nextLine());
 			
-			System.out.print("Ingrese el modelo del vehículo: ");
+			System.out.print("Ingrese el modelo del vehï¿½culo: ");
 			vehiculo.setModelo(sc.nextLine());
 			
 			while (true) {
 				try {
-					System.out.print("Ingrese el año de fabricación del vehículo: ");
+					System.out.print("Ingrese el aï¿½o de fabricaciï¿½n del vehï¿½culo: ");
 					vehiculo.setAnio(sc.nextInt());
 					sc.nextLine();
 					if (vehiculo.getAnio() > 2014) {
 						break;
 					} else {
-						System.out.println("Error: No se admiten vehículos fabricados antes de 2015");
+						System.out.println("Error: No se admiten vehï¿½culos fabricados antes de 2015");
 						continue;
 					}
 				} catch (InputMismatchException e) {
-					System.out.println("Error: Este campo solo admite números");
+					System.out.println("Error: Este campo solo admite nï¿½meros");
 					sc.nextLine();
 				}
 			}
 			
-			System.out.print("Ingrese el tipo de vehículo (Moto/Auto/SUV): ");
+			System.out.print("Ingrese el tipo de vehï¿½culo (Moto/Auto/SUV): ");
 			vehiculo.setTipo(sc.nextLine());
 			
 			try {
 				boolean exito = VehiculoQuery.actualizarVehiculo(conn, vehiculo, matricula);
 				if (exito) {
-					System.out.println("Registro modificado con éxito");
+					System.out.println("Registro modificado con ï¿½xito");
 				} else {
 					System.out.println("Error: No se han podido realizar las modificaciones en este registro");
 				}
 			} catch (SQLIntegrityConstraintViolationException e) {
-				System.out.println("Error: La matrícula ingresada ya ha sido registrada");
+				System.out.println("Error: La matrï¿½cula ingresada ya ha sido registrada");
 			} catch (MysqlDataTruncation e) {
-				System.out.println("Error: Ocurrió un problema en el ingreso de datos. Inténtelo nuevamente o contacte al soporte técnico");
+				System.out.println("Error: Ocurriï¿½ un problema en el ingreso de datos. Intï¿½ntelo nuevamente o contacte al soporte tï¿½cnico");
 			}
 		} else {
-			System.out.println("Vehículo no encontrado");
+			System.out.println("Vehï¿½culo no encontrado");
 		}
 	}
 
@@ -717,25 +715,25 @@ public class Sistema {
 		int idCliente = 0;
 		while (true) {
 			if (VehiculoQuery.hayVehiculosDisponibles(conn)) {
-				System.out.println("[1] Registrar alquiler por Nº de cliente");
+				System.out.println("[1] Registrar alquiler por Nï¿½ de cliente");
 				System.out.println("[2] Registrar alquiler por DNI/Licencia");
-				System.out.println("[3] Regresar al menú principal");
+				System.out.println("[3] Regresar al menï¿½ principal");
 				byte opcion = selectorOpcion(sc);
 	
 				switch(opcion) {
 					case 1:
-						System.out.println("[1] Ingresar Nº de cliente");
+						System.out.println("[1] Ingresar Nï¿½ de cliente");
 						System.out.println("[2] Mostrar lista de clientes existentes");
 						byte opcion_cliente = selectorOpcion(sc);
 						
 						switch (opcion_cliente) {
 							case 1:
 								try {
-									System.out.print("Ingrese el Nº de cliente: ");
+									System.out.print("Ingrese el Nï¿½ de cliente: ");
 									idCliente = sc.nextInt();
 									sc.nextLine();
 								} catch (InputMismatchException e) {
-									System.out.println("Error: Este campo solo admite números");
+									System.out.println("Error: Este campo solo admite nï¿½meros");
 									sc.nextLine();
 								}
 								cliente = new ClienteQuery().mostrarClientePorId(conn, idCliente);
@@ -744,8 +742,8 @@ public class Sistema {
 								cliente = new ClienteQuery().selectorClientePorId(conn, sc);
 								break;
 							default:
-								System.out.println("Advertencia: Opción no válida");
-								break;
+								System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
+								continue;
 						}
 						
 						if (cliente != null) {
@@ -764,12 +762,12 @@ public class Sistema {
 						break;
 					case 2:
 						while (true) {
-							System.out.print("Ingrese el DNI del cliente a eliminar: ");
+							System.out.print("Ingrese el Nï¿½ de DNI del cliente: ");
 							dni = sc.nextLine();
 							if (validarDNI(dni)) {
 								break;
 							} else {
-								System.out.println("El DNI debe contener solo números y entre 7 a 9 caracteres. Intentelo nuevamente");
+								System.out.println("El DNI debe contener solo nï¿½meros y entre 7 a 9 caracteres. Intentelo nuevamente");
 							}
 						}
 						
@@ -787,12 +785,12 @@ public class Sistema {
 					case 3:
 						break;
 					default:
-						System.out.println("Advertencia: Opción no válida");
+						System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 						continue;
 				}
 				break;
 			} else {
-				System.out.println("Error: No hay vehículos disponibles");
+				System.out.println("Error: No hay vehï¿½culos disponibles");
 			}
 			break;
 		}
@@ -800,19 +798,19 @@ public class Sistema {
 	
 	private static void procesoAlquiler(Connection conn, Scanner sc, Cliente cliente) {
 		LocalDate fecha_alquiler = null;
-		LocalDate fecha_devolucion = null;
+		LocalDate fecha_devolucion_pactada = null;
 		Vehiculo vehiculo = null;
 		
 		while (true) {
 			System.out.println("Seleccione el tipo de alquiler");
-			System.out.println("[1] Alquiler rápido");
+			System.out.println("[1] Alquiler rï¿½pido");
 			System.out.println("[2] Alquiler programado");
 			byte opcion_tipo = selectorOpcion(sc);
 			
 			switch(opcion_tipo) {
 				case 1:
 					fecha_alquiler = LocalDate.now();
-					System.out.println("El alquiler comenzará hoy (" + fecha_alquiler + ")");
+					System.out.println("El alquiler comenzarï¿½ hoy (" + fecha_alquiler + ")");
 					break;
 				case 2:
 					while (true) {
@@ -826,24 +824,24 @@ public class Sistema {
 								System.out.println("Error: La fecha de inicio del alquiler no puede ser previa a hoy.");
 								continue;
 							} else {
-								System.out.println("El alquiler comenzará el día " + inicio_programado);
+								System.out.println("El alquiler comenzarï¿½ el dï¿½a " + inicio_programado);
 								break;
 							}
 						} catch (DateTimeParseException e) {
-							System.out.println("Error: Formato de fecha inválido (formato esperado: aaaa-MM-dd)");
+							System.out.println("Error: Formato de fecha invï¿½lido (formato esperado: aaaa-MM-dd)");
 							continue;
 						}
 					}
 					break;
 				default:
-					System.out.println("Advertencia: Opción no válida");
+					System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 					continue;
 			}
 			break;
 		}
 		
 		while (true) {
-			System.out.println("Seleccione el tipo de vehículo deseado");
+			System.out.println("Seleccione el tipo de vehï¿½culo deseado");
 			System.out.println("[1] Auto");
 			System.out.println("[2] Camioneta");
 			System.out.println("[3] Moto");
@@ -855,88 +853,88 @@ public class Sistema {
 		    		   null;
 			
 			if (vehiculo == null) {
-				System.out.println("Advertencia: Opción no válida");
+				System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 				continue;
 			}
 			break;
 		}
 		
 		while (true) {
-			System.out.println("Seleccione fecha de devolución");
-			System.out.println("[1] Devolución en un día");
-			System.out.println("[2] Devolución en tres días");
-			System.out.println("[3] Devolución en siete días");
-			System.out.println("[4] Establecer fecha de devolución personalizada");
+			System.out.println("Seleccione fecha de devoluciï¿½n");
+			System.out.println("[1] Devoluciï¿½n en un dï¿½a");
+			System.out.println("[2] Devoluciï¿½n en tres dï¿½as");
+			System.out.println("[3] Devoluciï¿½n en siete dï¿½as");
+			System.out.println("[4] Establecer fecha de devoluciï¿½n personalizada");
 			byte opcion_devolucion = selectorOpcion(sc);
 			
 			switch (opcion_devolucion) {
 				case 1:
-					fecha_devolucion = fecha_alquiler.plusDays(1);
+					fecha_devolucion_pactada = fecha_alquiler.plusDays(1);
 					break;
 				case 2:
-					fecha_devolucion = fecha_alquiler.plusDays(3);
+					fecha_devolucion_pactada = fecha_alquiler.plusDays(3);
 					break;
 				case 3:
-					fecha_devolucion = fecha_alquiler.plusDays(7);
+					fecha_devolucion_pactada = fecha_alquiler.plusDays(7);
 					break;
 				case 4:
 					while (true) {
-						System.out.print("Ingrese la fecha de devolución (formato: aaaa-MM-dd): ");
-						String fecha_devolucion_str = sc.nextLine();
+						System.out.print("Ingrese la fecha de devoluciï¿½n (formato: aaaa-MM-dd): ");
+						String fecha_devolucion_pactada_str = sc.nextLine();
 						
 						try {
-							fecha_devolucion = LocalDate.parse(fecha_devolucion_str);
+							fecha_devolucion_pactada = LocalDate.parse(fecha_devolucion_pactada_str);
 							LocalDate fechaLimite = fecha_alquiler.plusDays(90);
 							
-							if (fecha_devolucion.isBefore(fecha_alquiler)) {
-								System.out.println("Error: La fecha de finalización no puede ser anterior a la fecha de inicio");
+							if (fecha_devolucion_pactada.isBefore(fecha_alquiler)) {
+								System.out.println("Error: La fecha de finalizaciï¿½n no puede ser anterior a la fecha de inicio");
 								continue;
 							}
 			
-							if (fecha_devolucion.isAfter(fechaLimite)) {
-								System.out.println("Error: La fecha de finalización del alquiler no debe ser superior a 90 días");
+							if (fecha_devolucion_pactada.isAfter(fechaLimite)) {
+								System.out.println("Error: La fecha de finalizaciï¿½n del alquiler no debe ser superior a 90 dï¿½as");
 								continue;
 							}
 							break;
 						} catch (DateTimeParseException e) {
-							System.out.println("Error: Formato de fecha inválido (formato esperado: aaaa-MM-dd)");
+							System.out.println("Error: Formato de fecha invï¿½lido (formato esperado: aaaa-MM-dd)");
 							continue;
 						}
 					}
 					break;
 				default:
-					System.out.println("Advertencia: Opción no válida");
+					System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 					continue;
 			}
 			break;
 		}
-		System.out.println("Fecha de devolución seleccionada: " + fecha_devolucion);
+		System.out.println("Fecha de devoluciï¿½n seleccionada: " + fecha_devolucion_pactada);
 		
-		System.out.println("¿Desea confirmar el alquiler?");
+		System.out.println("ï¿½Desea confirmar el alquiler?");
 		System.out.println("[1] Confirmar alquiler");
 		System.out.println("[2] Cancelar alquiler");
 		byte opcion_confirmar = selectorOpcion(sc);
 		
 		switch (opcion_confirmar) {
 			case 1:
-				Alquiler alquiler = new Alquiler(cliente, vehiculo, fecha_alquiler, fecha_devolucion);
+				Alquiler alquiler = new Alquiler(cliente, vehiculo, fecha_alquiler, fecha_devolucion_pactada);
 				new AlquilerQuery().insertarAlquiler(conn, alquiler);
 				boolean exito = VehiculoQuery.modificarEstadoVehiculo(conn, "alq", alquiler.getVehiculo().getId_vehiculo());
 				if (!exito) {
-					System.out.println("Error: El estado del vehículo no ha podido ser modificado");
+					System.out.println("Error: El estado del vehï¿½culo no ha podido ser modificado");
 				}
 				break;
 			case 2:
 				System.out.println("Alquiler cancelado");
 				break;
 			default:
-				System.out.println("Advertencia: Opción no válida");
+				System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 				break;
 		}
 	}
 
-	private static void mostrarAlquileres(Connection conn) {
-		JFrame frame = new JFrame("Listado de alquileres histórico");
+	private static void mostrarAlquileresActivos(Connection conn) {
+		JFrame frame = new JFrame("Listado de alquileres activos");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(1100, 300);
 		
@@ -944,12 +942,12 @@ public class Sistema {
 		JTable table = new JTable(model);
 		
 		model.addColumn("ID de alquiler");
-		model.addColumn("Nº de Cliente");
+		model.addColumn("Nï¿½ de Cliente");
 		model.addColumn("Nombre del cliente");
-		model.addColumn("ID del vehículo");
-		model.addColumn("Descripción del vehículo");
+		model.addColumn("ID del vehï¿½culo");
+		model.addColumn("Descripciï¿½n del vehï¿½culo");
 		model.addColumn("Fecha de inicio del alquiler");
-		model.addColumn("Fecha de finalización del alquiler");
+		model.addColumn("Fecha de finalizaciï¿½n pactada del alquiler");
 		
 		ArrayList<Alquiler> alquileres = new AlquilerQuery().mostrarAlquileresActivos(conn);
 		
@@ -961,7 +959,7 @@ public class Sistema {
 					a.getVehiculo().getId_vehiculo(),
 					a.getVehiculo().getMarcaModelo(),
 					a.getFecha_alquiler(),
-					a.getFecha_devolucion()
+					a.getFecha_devolucion_pactada()
 			});
 		}
 		
@@ -973,18 +971,18 @@ public class Sistema {
 		while (true) {
 			Cliente cliente = null;
 			int idCliente = 0;
-			System.out.println("[1] Ingresar Nº de Cliente");
+			System.out.println("[1] Ingresar Nï¿½ de Cliente");
 			System.out.println("[2] Mostrar lista de clientes existentes");
-			System.out.println("[3] Regresar al menú principal");
+			System.out.println("[3] Regresar al menï¿½ principal");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
 				case 1:
 					try {
-						System.out.print("Ingrese el Nº de Cliente: ");
+						System.out.print("Ingrese el Nï¿½ de Cliente: ");
 						idCliente = sc.nextInt();
 					} catch (InputMismatchException e) {
-						System.out.println("Error: Este campo solo admite números");
+						System.out.println("Error: Este campo solo admite nï¿½meros");
 						sc.nextLine();
 					}
 					cliente = new ClienteQuery().mostrarClientePorId(conn, idCliente);
@@ -995,24 +993,26 @@ public class Sistema {
 				case 3:
 					break;
 				default:
-					System.out.println("Advertencia: Opción no válida");
+					System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 					continue;
 			}
 			
 			if (cliente != null) {
-				JFrame frame = new JFrame("Listado de alquileres de " + cliente.getNombre());
+				JFrame frame = new JFrame("Listado de alquileres de " + cliente.getNombre() + "(Nï¿½ de Cliente: " + cliente.getId() + ")");
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.setSize(1100, 300);
 				
 				DefaultTableModel model = new DefaultTableModel();
 				JTable table = new JTable(model);
 				
-				model.addColumn("ID de alquiler");
-				model.addColumn("ID del vehículo");
-				model.addColumn("Descripción del vehículo");
+				model.addColumn("ID de Alquiler");
+				model.addColumn("ID de Vehï¿½culo");
+				model.addColumn("Descripciï¿½n del vehï¿½culo");
 				model.addColumn("Fecha de inicio del alquiler");
-				model.addColumn("Fecha de finalización del alquiler");
+				model.addColumn("Fecha de finalizaciï¿½n pactada del alquiler");
+				model.addColumn("Fecha real de finalizaciï¿½n del alquiler");
 				model.addColumn("Estado");
+				model.addColumn("Motivo de finalizaciï¿½n/cancelaciï¿½n");
 				
 				ArrayList<Alquiler> listaAlquileresPorUsuario = new AlquilerQuery().mostrarAlquileresPorUsuario(conn, cliente.getId());
 				
@@ -1022,8 +1022,10 @@ public class Sistema {
 							a.getVehiculo().getId_vehiculo(),
 							a.getVehiculo().getMarcaModelo(),
 							a.getFecha_alquiler(),
+							a.getFecha_devolucion_pactada(),
 							a.getFecha_devolucion(),
-							a.getEstado()
+							a.getEstado(),
+							a.getMotivo_baja()
 					});
 				}
 				
@@ -1043,15 +1045,19 @@ public class Sistema {
 	private static void finalizarAlquiler(Connection conn, Scanner sc) {
 		while (true) {
 			Alquiler alquiler = null;
-			System.out.println("[1] Mostrar lista de alquileres activos");
-			System.out.println("[2] Regresar al menú principal");
+			System.out.println("[1] Mostrar lista de alquileres activos o vencidos");
+			System.out.println("[2] Regresar al menï¿½ principal");
 			byte opcion = selectorOpcion(sc);
 			
 			switch (opcion) {
 				case 1:
-					alquiler = new AlquilerQuery().selectorAlquilerActivo(conn, sc);
+					alquiler = new AlquilerQuery().selectorAlquiler(conn, sc);
 					if (alquiler != null) {
-						AlquilerQuery.finalizarAlquiler(conn, alquiler.getId_alquiler());
+						int idAlquiler = alquiler.getId_alquiler();
+						int idVehiculo = alquiler.getVehiculo().getId_vehiculo();
+						System.out.print("Indique el motivo de la finalizaciï¿½n del alquiler: ");
+						String motivo_baja = sc.nextLine();
+						AlquilerQuery.actualizarEstadosAlquiler(conn, idAlquiler, idVehiculo, motivo_baja);
 					}
 					break;
 				case 2:
@@ -1066,11 +1072,11 @@ public class Sistema {
 	private static byte selectorOpcion(Scanner sc) {
 		byte opcion = 0;
 		try {
-			System.out.print("Ingrese una opción: ");
+			System.out.print("Ingrese una opciï¿½n: ");
 			opcion = sc.nextByte();
 			sc.nextLine();
 		} catch (InputMismatchException e) {
-			System.out.println("Error: El selector de opciones solo admite números");
+			System.out.println("Error: El selector de opciones solo admite nï¿½meros");
 			sc.nextLine();
 		}
 		return opcion;
@@ -1089,33 +1095,33 @@ public class Sistema {
 			case 2:
 				return false;
 			default:
-				System.out.println("Advertencia: Opción no válida");
+				System.out.println("Advertencia: Opciï¿½n no vï¿½lida");
 				return false;
 		}
 	}
 	
 	private static boolean validarDNI(String dni) {
-		// Verifica que solo tenga números entre 6 y 9 caracteres
+		// Verifica que solo tenga nï¿½meros entre 6 y 9 caracteres
 		return dni.matches("\\d{6,9}");
 	}
 	
 	private static boolean validarNombre(String nombre) {
-		// Verifica que solo tenga letras (sin importar acentos) y que tenga como mínimo 2 palabras separadas
+		// Verifica que solo tenga letras (sin importar acentos) y que tenga como mï¿½nimo 2 palabras separadas
 		return nombre.matches("^[\\p{L}]+(\\s[\\p{L}]+)+$");
 	}
 	
 	private static boolean validarDireccion(String direccion) {
-		// Verifica que no contenga solo números, que tenga como mínimo 2 palabras separadas
+		// Verifica que no contenga solo nï¿½meros, que tenga como mï¿½nimo 2 palabras separadas
 	    return direccion.matches(".*[\\p{L}]+.*") && direccion.matches("^[\\p{L}\\d\\s,./]+$") && direccion.matches(".*\\b\\p{L}+\\b.*\\s+\\b\\p{L}+\\b.*");
 	}
 	
 	private static boolean validarTelefono(String telefono) {
-		// Verifica solo números entre 7 y 15 caracteres
+		// Verifica solo nï¿½meros entre 7 y 15 caracteres
 		return telefono.matches("^\\d{7,15}$");
 	}
 	
 	private static boolean validarMatricula(String matricula) {
 		// Verifica los formatos AB123CD o ABC123
-		return matricula.matches("^[A-Z]{2}\\d{3}[A-Z]{2}$|^[A-Z]{3}\\d{3}$");
+		return matricula.matches("^[A-Z]{2}\\d{3}[A-Z]{2}$|^[A-Z]{3}\\d{3}$|^\\d{3}[A-Z]{3}$");
 	}
 }

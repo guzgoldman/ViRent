@@ -7,31 +7,55 @@ public class Alquiler {
 	private Cliente cliente;
 	private Vehiculo vehiculo;
 	private LocalDate fecha_alquiler;
+	private LocalDate fecha_devolucion_pactada;
 	private LocalDate fecha_devolucion;
 	private String estado;
+	private String motivo_baja;
 	
-	public Alquiler (int id_alquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion) {
+	public Alquiler (int id_alquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion_pactada, LocalDate fecha_devolucion, String estado, String motivo_baja) {
 		this.setId_alquiler(id_alquiler);
 		this.setCliente(cliente);
 		this.setVehiculo(vehiculo);
 		this.setFecha_alquiler(fecha_alquiler);
+		this.setFecha_devolucion_pactada(fecha_devolucion_pactada);
 		this.setFecha_devolucion(fecha_devolucion);
+		this.setMotivo_baja(motivo_baja);
+		this.setEstado(estado);
 	}
 	
-	public Alquiler (int id_alquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion, String estado) {
+	public Alquiler (int id_alquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion_pactada) {
+		this.setId_alquiler(id_alquiler);
+		this.setCliente(cliente);
+		this.setVehiculo(vehiculo);
+		this.setFecha_alquiler(fecha_alquiler);
+		this.setFecha_devolucion_pactada(fecha_devolucion_pactada);
+	}
+	
+	public Alquiler (int id_alquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion_pactada, LocalDate fecha_devolucion, String motivo_baja) {
+		this.setId_alquiler(id_alquiler);
+		this.setCliente(cliente);
+		this.setVehiculo(vehiculo);
+		this.setFecha_alquiler(fecha_alquiler);
+		this.setFecha_devolucion_pactada(fecha_devolucion_pactada);
+		this.setFecha_devolucion(fecha_devolucion);
+		this.setMotivo_baja(motivo_baja);
+	}
+	
+	public Alquiler (int id_alquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion, String estado, String motivo_baja) {
 		this.setId_alquiler(id_alquiler);
 		this.setCliente(cliente);
 		this.setVehiculo(vehiculo);
 		this.setFecha_alquiler(fecha_alquiler);
 		this.setFecha_devolucion(fecha_devolucion);
 		this.setEstado(estado);
+		this.setMotivo_baja(motivo_baja);
 	}
 	
-	public Alquiler (Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion) {
+	public Alquiler (Cliente cliente, Vehiculo vehiculo, LocalDate fecha_alquiler, LocalDate fecha_devolucion_pactada) {
 		this.setCliente(cliente);
 		this.setVehiculo(vehiculo);
 		this.setFecha_alquiler(fecha_alquiler);
-		this.setFecha_devolucion(fecha_devolucion);
+		this.setFecha_devolucion_pactada(fecha_devolucion_pactada);
 	}
 
 	public int getId_alquiler() {
@@ -66,6 +90,14 @@ public class Alquiler {
 		this.vehiculo = vehiculo;
 	}
 
+	public LocalDate getFecha_devolucion_pactada() {
+		return fecha_devolucion_pactada;
+	}
+
+	public void setFecha_devolucion_pactada(LocalDate fecha_devolucion_pactada) {
+		this.fecha_devolucion_pactada = fecha_devolucion_pactada;
+	}
+
 	public LocalDate getFecha_devolucion() {
 		return fecha_devolucion;
 	}
@@ -84,5 +116,13 @@ public class Alquiler {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public String getMotivo_baja() {
+		return motivo_baja;
+	}
+
+	public void setMotivo_baja(String motivo_baja) {
+		this.motivo_baja = motivo_baja;
 	}
 }
