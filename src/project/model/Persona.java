@@ -1,9 +1,11 @@
-package Programa;
+package project.model;
 
 abstract class Persona {
 	private String nombre;
 	private String direccion;
 	private String telefono;
+	
+	public Persona() {}
 	
 	public Persona(String nombre, String direccion, String telefono) {
 		this.setNombre(nombre);
@@ -21,7 +23,7 @@ abstract class Persona {
 		if (nombre != null && !nombre.isEmpty()) {
 			this.nombre = nombre;
 		} else {
-			System.out.println("Error: Nombre inválido");
+			System.out.println("Error: Nombre invï¿½lido");
 		}
 	}
 

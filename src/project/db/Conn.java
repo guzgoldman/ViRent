@@ -1,12 +1,12 @@
-package Programa;
+package project.db;
 import java.sql.*;
 
-public class Conexion {
+public class Conn {
 	private String url;
 	private String username;
 	private String password;
 	
-	public Conexion(String url, String username, String password) {
+	public Conn(String url, String username, String password) {
 		this.url = url;
 		this.username = username;
 		this.password = password;
@@ -21,15 +21,5 @@ public class Conexion {
 			throw e;
 		}
 		return conn;
-	}
-	
-	public void closeConnection(Connection conn) {
-		try {
-			if (conn != null && !conn.isClosed()) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			System.out.println("Error al cerrar la conexión: " + e.getMessage());
-		}
 	}
 }

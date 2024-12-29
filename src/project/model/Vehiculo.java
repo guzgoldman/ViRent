@@ -1,16 +1,18 @@
-package Programa;
+package project.model;
 
-public class Vehiculo {
-	private int id_vehiculo;
+public class Vehiculo implements Seleccionable {
+	private int id;
 	private String marca;
 	private String modelo;
 	private int anio;
 	private String matricula;
-	private String tipo; //Auto, Camioneta, SUV, etc.
+	private String tipo;
 	private String estado;
 	
-	public Vehiculo(int id_vehiculo, String marca, String modelo, String matricula, int anio, String estado) {
-		this.setId_vehiculo(id_vehiculo);
+	public Vehiculo() {}
+	
+	public Vehiculo(int id, String marca, String modelo, String matricula, int anio, String estado) {
+		this.setId(id);
 		this.setMarca(marca);
 		this.setModelo(modelo);
 		this.setAnio(anio);
@@ -18,8 +20,8 @@ public class Vehiculo {
 		this.setEstado(estado);
 	}
 	
-	public Vehiculo(int id_vehiculo, String marca, String modelo, int anio, String matricula, String tipo) {
-		this.setId_vehiculo(id_vehiculo);
+	public Vehiculo(int id, String marca, String modelo, int anio, String matricula, String tipo) {
+		this.setId(id);
 		this.setMarca(marca);
 		this.setModelo(modelo);
 		this.setAnio(anio);
@@ -27,8 +29,8 @@ public class Vehiculo {
 		this.setTipo(tipo);
 	}
 	
-	public Vehiculo(int id_vehiculo, String marca, String modelo, int anio, String matricula, String tipo, String estado) {
-		this.setId_vehiculo(id_vehiculo);
+	public Vehiculo(int id, String marca, String modelo, int anio, String matricula, String tipo, String estado) {
+		this.setId(id);
 		this.setMarca(marca);
 		this.setModelo(modelo);
 		this.setAnio(anio);
@@ -45,12 +47,12 @@ public class Vehiculo {
 		this.setTipo(tipo);
 	}
 
-	public int getId_vehiculo() {
-		return id_vehiculo;
+	public int getId() {
+		return id;
 	}
 
-	public void setId_vehiculo(int id_vehiculo) {
-		this.id_vehiculo = id_vehiculo;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getMarca() {
@@ -70,7 +72,7 @@ public class Vehiculo {
 	}
 	
 	public String getMarcaModelo() {
-		return this.getMarca() + " " + this.getModelo() + " - Matrícula: " + this.getMatricula();
+		return this.getMarca() + " " + this.getModelo() + " - Matrï¿½cula: " + this.getMatricula();
 	}
 
 	public int getAnio() {
@@ -106,11 +108,10 @@ public class Vehiculo {
 	}
 	
 	public void mostrarDatos() {
-		System.out.println("[" + this.getMarca() + " " + this.getModelo() + " (" + this.getAnio() + ") - " + "Matrícula: " + this.getMatricula() + "]");
+		System.out.println("[" + this.getMarca() + " " + this.getModelo() + " (" + this.getAnio() + ") - " + "Matricula: " + this.getMatricula() + "]");
 	}
-	
-	public void selectorVehiculoPorId() {
-		System.out.println("["+this.getId_vehiculo()+"]"
-						+ " [" + this.getMarca() + " " + this.getModelo() + " - Matrícula: " + this.getMatricula() + "]");
+
+	public void mostrarEnSelector() {
+		System.out.println("["+this.getId()+"] [" + this.getMarca() + " " + this.getModelo() + " - Matricula: " + this.getMatricula() + "]");		
 	}
 }
